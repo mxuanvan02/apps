@@ -1,5 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
-
 import algoliasearch from "algoliasearch";
 import type { NextApiRequest, NextApiResponse } from "next";
 
