@@ -1,18 +1,45 @@
-// pages/extensions/search.tsx
+// src/pages/extensions/search.tsx
 import { withAppBridge } from "@saleor/app-sdk/app-bridge/with-app-bridge";
 import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, SearchBox, Hits, Pagination } from "react-instantsearch-hooks-web";
 import React from "react";
+import { Hits, InstantSearch, Pagination, SearchBox } from "react-instantsearch-hooks-web";
 
-function HitItem({ hit }: any) {
-  return <div style={{ padding: 8, borderBottom: "1px solid #eee" }}>{hit.name}</div>;
+type SecuredKeyResponse = {
+  appId: string;
+  apiKey: string;
+  indexName: string;
+};
+
+type ProductHit = {
+  name?: string;
+};
+
+function HitItem({ hit }: { hit: ProductHit }) {
+  return (
+    <div style={{ padding: 8, borderBottom: "1px solid #eee" }}>
+      {hit.name ?? "(no name)"}
+    </div>
+  );
 }
 
 function SearchPage() {
-  const [cfg, setCfg] = React.useState<any>(null);
-  React.useEffect(() => { fetch("/api/algolia/secured-key").then(r=>r.json()).then(setCfg); }, []);
-  if (!cfg) return null;
+  const [cfg, setCfg] = React.useState<SecuredKeyResponse | null>(null);
+
+  React.useEffect(() => {
+    fetch("/api/algolia/secured-key")
+      .then((r) => r.json())
+      .then((data: SecuredKeyResponse) => setCfg(data))
+      .catch(() => setCfg(null));
+  }, []);
+
+  // (giữ dòng trống theo rule padding-line-between-statements)
+  if (!cfg) {
+    return null;
+  }
+
   const searchClient = algoliasearch(cfg.appId, cfg.apiKey);
+
+  // (giữ dòng trống theo rule padding-line-between-statements)
   return (
     <div style={{ padding: 16 }}>
       <h2>Search (Algolia)</h2>
@@ -24,4 +51,5 @@ function SearchPage() {
     </div>
   );
 }
+
 export default withAppBridge(SearchPage);
