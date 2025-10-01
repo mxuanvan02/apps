@@ -3,5 +3,5 @@
     "src/pages/api/webhooks/saleor/**/*": {
       "memory": 256
     }
-  },
+  }
 }
