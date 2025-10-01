@@ -29,6 +29,13 @@ export default wrapWithLoggerContext(
              * Optionally, extend Dashboard with custom UIs
              * https://docs.saleor.io/developer/extending/apps/extending-dashboard-with-apps
              */
+            {
+              label: "Search (Algolia)",
+              mount: "NAVIGATION_CATALOG",
+              target: "APP_PAGE",
+              permissions: ["MANAGE_PRODUCTS"],
+              url: "/extensions/search",
+            },
           ],
           homepageUrl: "https://github.com/saleor/apps",
           id: "saleor.app.search",
