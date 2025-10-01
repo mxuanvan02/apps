@@ -1,5 +1,9 @@
+/* eslint-disable simple-import-sort/imports, padding-line-between-statements, @typescript-eslint/no-explicit-any */
+
 import React from "react";
 import algoliasearch from "algoliasearch/lite";
+import { withAppBridge } from "@saleor/app-sdk/app-bridge/with-app-bridge";
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import {
   Hits,
   InstantSearch,
@@ -8,8 +12,6 @@ import {
   SearchBox,
   SortBy,
 } from "react-instantsearch-hooks-web";
-import { withAppBridge } from "@saleor/app-sdk/app-bridge/with-app-bridge";
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 type HitType = {
   objectID: string;
@@ -21,22 +23,37 @@ type HitType = {
   inStock?: boolean;
 };
 
-
 function HitItem({ hit }: { hit: HitType }) {
   const appBridge = useAppBridge();
+
   const goProduct = () => {
     if (hit.productId) {
       appBridge?.dispatch("redirect", { to: `/products/${hit.productId}` });
     }
   };
+
   return (
-    <div onClick={goProduct} style={{
-      cursor: "pointer", padding: 12, border: "1px solid #eee",
-      borderRadius: 10, display: "flex", gap: 12, alignItems: "center"
-    }}>
+    <div
+      onClick={goProduct}
+      style={{
+        cursor: "pointer",
+        padding: 12,
+        border: "1px solid #eee",
+        borderRadius: 10,
+        display: "flex",
+        gap: 12,
+        alignItems: "center",
+      }}
+    >
+      {/* warning <img> không làm fail build; tối ưu sau bằng next/image */}
       {hit.thumbnail && (
-        <img src={hit.thumbnail} alt="" width={48} height={48}
-             style={{ objectFit: "cover", borderRadius: 8 }} />
+        <img
+          src={hit.thumbnail}
+          alt=""
+          width={48}
+          height={48}
+          style={{ objectFit: "cover", borderRadius: 8 }}
+        />
       )}
       <div>
         <div style={{ fontWeight: 700 }}>{hit.productName || hit.name}</div>
@@ -46,9 +63,15 @@ function HitItem({ hit }: { hit: HitType }) {
   );
 }
 
-function SearchPage() {
+function SearchPageInner() {
   const [cfg, setCfg] = React.useState<{ appId: string; apiKey: string; indexName: string } | null>(null);
-  React.useEffect(() => { fetch("/api/algolia/secured-key").then(r => r.json()).then(setCfg); }, []);
+
+  React.useEffect(() => {
+    fetch("/api/algolia/secured-key")
+      .then((r) => r.json())
+      .then(setCfg);
+  }, []);
+
   if (!cfg) return <div style={{ padding: 16 }}>Loading…</div>;
 
   const searchClient = algoliasearch(cfg.appId, cfg.apiKey);
@@ -84,4 +107,4 @@ function SearchPage() {
   );
 }
 
-export default withAppBridge(SearchPage as any);
+export default withAppBridge(SearchPageInner);
