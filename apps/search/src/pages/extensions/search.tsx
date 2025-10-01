@@ -1,12 +1,12 @@
 import React from "react";
 import algoliasearch from "algoliasearch/lite";
 import {
-  InstantSearch,
-  SearchBox,
   Hits,
-  RefinementList,
+  InstantSearch,
   Pagination,
-  SortBy
+  RefinementList,
+  SearchBox,
+  SortBy,
 } from "react-instantsearch-hooks-web";
 import { withAppBridge } from "@saleor/app-sdk/app-bridge/with-app-bridge";
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
@@ -20,6 +20,7 @@ type HitType = {
   thumbnail?: string;
   inStock?: boolean;
 };
+
 
 function HitItem({ hit }: { hit: HitType }) {
   const appBridge = useAppBridge();
