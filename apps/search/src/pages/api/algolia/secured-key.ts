@@ -1,3 +1,5 @@
+/* eslint-disable simple-import-sort/imports */
+
 import algoliasearch from "algoliasearch";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -13,7 +15,7 @@ export default function handler(_: NextApiRequest, res: NextApiResponse) {
   const client = algoliasearch(appId, searchOnlyKey);
   const securedKey = client.generateSecuredApiKey(searchOnlyKey, {
     restrictIndices: [indexName],
-    validUntil: Math.floor(Date.now() / 1000) + 3600
+    validUntil: Math.floor(Date.now() / 1000) + 3600,
   });
 
   res.status(200).json({ appId, apiKey: securedKey, indexName });
