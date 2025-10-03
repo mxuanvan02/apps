@@ -2,19 +2,43 @@ import algoliasearch from "algoliasearch";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(_: NextApiRequest, res: NextApiResponse) {
-  const appId = process.env.ALGOLIA_APP_ID!;
-  const searchOnlyKey = process.env.ALGOLIA_SEARCH_ONLY_KEY!;
-  const prefix = process.env.ALGOLIA_INDEX_PREFIX!;
-  const channel = process.env.CHANNEL_SLUG!;
-  const currency = process.env.CURRENCY!;
+  const {
+    ALGOLIA_APP_ID,
+    ALGOLIA_SEARCH_ONLY_KEY,
+    ALGOLIA_INDEX_PREFIX,
+    CHANNEL_SLUG,
+    CURRENCY,
+  } = process.env;
 
-  const indexName = `${prefix}.${channel}.${currency}.products`;
+  if (
+    !ALGOLIA_APP_ID ||
+    !ALGOLIA_SEARCH_ONLY_KEY ||
+    !ALGOLIA_INDEX_PREFIX ||
+    !CHANNEL_SLUG ||
+    !CURRENCY
+  ) {
+    console.error("Missing env var(s)", {
+      ALGOLIA_APP_ID,
+      ALGOLIA_SEARCH_ONLY_KEY,
+      ALGOLIA_INDEX_PREFIX,
+      CHANNEL_SLUG,
+      CURRENCY,
+    });
+    return res.status(500).json({ error: "Server misconfiguration" });
+  }
 
-  const client = algoliasearch(appId, searchOnlyKey);
-  const securedKey = client.generateSecuredApiKey(searchOnlyKey, {
-    restrictIndices: [indexName],
-    validUntil: Math.floor(Date.now() / 1000) + 3600,
-  });
+  const indexName = `${ALGOLIA_INDEX_PREFIX}.${CHANNEL_SLUG}.${CURRENCY}.products`;
 
-  res.status(200).json({ appId, apiKey: securedKey, indexName });
+  try {
+    const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_KEY);
+    const securedKey = client.generateSecuredApiKey(ALGOLIA_SEARCH_ONLY_KEY, {
+      restrictIndices: indexName,  // thử string thay vì mảng nếu client yêu cầu
+      validUntil: Math.floor(Date.now() / 1000) + 3600,
+    });
+
+    return res.status(200).json({ appId: ALGOLIA_APP_ID, apiKey: securedKey, indexName });
+  } catch (err) {
+    console.error("Error generating securedKey:", err);
+    return res.status(500).json({ error: "Internal error generating key" });
+  }
 }
