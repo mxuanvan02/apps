@@ -22,8 +22,9 @@
         "ALGOLIA_SEARCH_ONLY_KEY",
         "ALGOLIA_INDEX_PREFIX",
         "CHANNEL_SLUG",
-        "CURRENCY"
-        
+        "CURRENCY",
+        "ALGOLIA_SEARCH_API_KEY",
+        "ALGOLIA_INDEX_NAME"
       ]
     }
   }
