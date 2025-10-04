@@ -1,43 +1,41 @@
 import algoliasearch from "algoliasearch";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+type SecuredKeyResponse = {
+  appId: string;
+  apiKey: string;
+  indexName: string;
+} | {
+  error: string;
+};
+
+export default function handler(req: NextApiRequest, res: NextApiResponse<SecuredKeyResponse>) {
   const {
     ALGOLIA_APP_ID,
-    ALGOLIA_SEARCH_ONLY_KEY,
-    ALGOLIA_INDEX_PREFIX,
-    CHANNEL_SLUG,
-    CURRENCY,
+    ALGOLIA_SEARCH_API_KEY,
+    ALGOLIA_INDEX_NAME,
   } = process.env;
 
-  // Kiểm tra biến môi trường
-  if (
-    !ALGOLIA_APP_ID ||
-    !ALGOLIA_SEARCH_ONLY_KEY ||
-    !ALGOLIA_INDEX_PREFIX ||
-    !CHANNEL_SLUG ||
-    !CURRENCY
-  ) {
-    console.error("Missing env var(s)", {
-      ALGOLIA_APP_id: ALGOLIA_APP_ID,
-      ALGOLIA_SEARCH_ONLY_KEY,
-      ALGOLIA_INDEX_PREFIX,
-      CHANNEL_SLUG,
-      CURRENCY,
+  if (!ALGOLIA_APP_ID || !ALGOLIA_SEARCH_API_KEY || !ALGOLIA_INDEX_NAME) {
+    console.error("Missing required env var(s)", {
+      ALGOLIA_APP_ID,
+      ALGOLIA_SEARCH_API_KEY,
+      ALGOLIA_INDEX_NAME,
     });
-    return res.status(500).json({ error: "Server misconfiguration: missing env var" });
+    return res.status(500).json({ error: "Server misconfiguration: missing env var(s)" });
   }
 
-  const indexName = `${ALGOLIA_INDEX_PREFIX}.${CHANNEL_SLUG}.${CURRENCY}.products`;
+  const indexName = ALGOLIA_INDEX_NAME;
 
   try {
-    const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_ONLY_KEY);
-    const parentKey = ALGOLIA_SEARCH_ONLY_KEY; // parent must be search-only key, không dùng admin
+    const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY);
 
-    // Chú ý: restrictIndices có thể là string (tên index) thay vì mảng nếu client không hỗ trợ mảng
+    // Dùng parentKey = ALGOLIA_SEARCH_API_KEY để tạo secured key
+    const parentKey = ALGOLIA_SEARCH_API_KEY;
+
     const securedKey = client.generateSecuredApiKey(parentKey, {
-      restrictIndices: indexName,
-      validUntil: Math.floor(Date.now() / 1000) + 3600,  // 1 giờ
+      restrictIndices: indexName,  // sử dụng string tên index
+      validUntil: Math.floor(Date.now() / 1000) + 3600,  // key hợp lệ trong 1 giờ
     });
 
     return res.status(200).json({
@@ -46,7 +44,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       indexName,
     });
   } catch (err: any) {
-    console.error("Error generating securedKey:", err.message ?? err, err.stack);
-    return res.status(500).json({ error: "Internal error generating key" });
+    console.error("Error generating secured key:", err.message || err, err.stack);
+    return res.status(500).json({ error: "Internal error generating secured key" });
   }
 }
