@@ -1411,6 +1411,9 @@ importers:
       react-instantsearch-hooks-web:
         specifier: 6.47.3
         version: 6.47.3(algoliasearch@4.23.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      remove-accents:
+        specifier: 0.5.0
+        version: 0.5.0
       urql:
         specifier: 'catalog:'
         version: 4.0.4(graphql@16.7.1)(react@18.2.0)
@@ -1472,6 +1475,9 @@ importers:
       graphql-config:
         specifier: 5.0.3
         version: 5.0.3(@types/node@22.13.10)(graphql@16.7.1)(typescript@5.8.2)
+      instantsearch.js:
+        specifier: 4.80.0
+        version: 4.80.0(algoliasearch@4.23.3)
       node-mocks-http:
         specifier: ^1.12.2
         version: 1.12.2
@@ -3613,6 +3619,10 @@ packages:
 
   '@babel/runtime@7.25.6':
     resolution: {integrity: sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.28.4':
+    resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.0':
@@ -6630,6 +6640,11 @@ packages:
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
 
+  algoliasearch-helper@3.26.0:
+    resolution: {integrity: sha512-Rv2x3GXleQ3ygwhkhJubhhYGsICmShLAiqtUuJTUkr9uOCOXyF2E71LVT4XDnVffbknv8XgScP4U0Oxtgm+hIw==}
+    peerDependencies:
+      algoliasearch: '>= 3.1 < 6'
+
   algoliasearch@4.23.3:
     resolution: {integrity: sha512-Le/3YgNvjW9zxIQMRhUHuhiUjAlKY/zsdZpfq4dlLqg6mEm0nL6yk+7f2hDOtLpxsgE4jSzDmvHL7nXdBp5feg==}
 
@@ -8732,8 +8747,16 @@ packages:
     resolution: {integrity: sha512-M1WuAmb7pn9zdFRtQYk26ZBoY043Sse0wVDdk4Bppr+JOXyQYybdtvK+l9wUibhtjdjvtoiNy8tk+EgsYIUqKg==}
     engines: {node: '>=12.0.0'}
 
+  instantsearch-ui-components@0.11.2:
+    resolution: {integrity: sha512-XxwqUY6NifxSvHYfyfJRiGhqYqHXQFcFNOEjNyFptB9HOkx14yCdayKar4BZxGx353FnFD6b4Z8LdzbGud+RFA==}
+
   instantsearch.js@4.56.8:
     resolution: {integrity: sha512-40DJ5l70ZzVzWPK3qrHTKlJLaHGq1PRZpzfL6281P2mz8G19WOHQHKAP4Zh6a4lOZaRtJQUiPjQwqCHSurXZ5g==}
+    peerDependencies:
+      algoliasearch: '>= 3.1 < 6'
+
+  instantsearch.js@4.80.0:
+    resolution: {integrity: sha512-l2HTW6+tBs2hGrby43Y7HbWayTifFFKk/ikRU5BXFpCigG6CRAYZLE1NFifAskaj3SVQiY8O8B/T6hJyeMsScA==}
     peerDependencies:
       algoliasearch: '>= 3.1 < 6'
 
@@ -10489,6 +10512,9 @@ packages:
 
   remedial@1.0.8:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
+
+  remove-accents@0.5.0:
+    resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
 
   remove-trailing-separator@1.1.0:
     resolution: {integrity: sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw==}
@@ -13506,6 +13532,8 @@ snapshots:
   '@babel/runtime@7.25.6':
     dependencies:
       regenerator-runtime: 0.14.1
+
+  '@babel/runtime@7.28.4': {}
 
   '@babel/template@7.27.0':
     dependencies:
@@ -17586,6 +17614,11 @@ snapshots:
       '@algolia/events': 4.0.1
       algoliasearch: 4.23.3
 
+  algoliasearch-helper@3.26.0(algoliasearch@4.23.3):
+    dependencies:
+      '@algolia/events': 4.0.1
+      algoliasearch: 4.23.3
+
   algoliasearch@4.23.3:
     dependencies:
       '@algolia/cache-browser-local-storage': 4.23.3
@@ -20156,6 +20189,10 @@ snapshots:
       through: 2.3.8
       wrap-ansi: 6.2.0
 
+  instantsearch-ui-components@0.11.2:
+    dependencies:
+      '@babel/runtime': 7.28.4
+
   instantsearch.js@4.56.8(algoliasearch@4.23.3):
     dependencies:
       '@algolia/events': 4.0.1
@@ -20169,6 +20206,22 @@ snapshots:
       algoliasearch-helper: 3.14.0(algoliasearch@4.23.3)
       hogan.js: 3.0.2
       htm: 3.1.1
+      preact: 10.27.2
+      qs: 6.9.7
+      search-insights: 2.17.3
+
+  instantsearch.js@4.80.0(algoliasearch@4.23.3):
+    dependencies:
+      '@algolia/events': 4.0.1
+      '@types/dom-speech-recognition': 0.0.1
+      '@types/google.maps': 3.58.1
+      '@types/hogan.js': 3.0.5
+      '@types/qs': 6.9.7
+      algoliasearch: 4.23.3
+      algoliasearch-helper: 3.26.0(algoliasearch@4.23.3)
+      hogan.js: 3.0.2
+      htm: 3.1.1
+      instantsearch-ui-components: 0.11.2
       preact: 10.27.2
       qs: 6.9.7
       search-insights: 2.17.3
@@ -22193,6 +22246,8 @@ snapshots:
       autolinker: 0.28.1
 
   remedial@1.0.8: {}
+
+  remove-accents@0.5.0: {}
 
   remove-trailing-separator@1.1.0: {}
 
