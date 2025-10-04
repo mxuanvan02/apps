@@ -59,6 +59,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "catalog:",
     "react-instantsearch-hooks-web": "6.47.3",
+    "remove-accents": "0.5.0",
     "urql": "catalog:",
     "zod": "catalog:"
   },
@@ -81,6 +82,7 @@
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "graphql-config": "5.0.3",
+    "instantsearch.js": "4.80.0",
     "node-mocks-http": "^1.12.2",
     "tsx": "catalog:",
     "typescript": "catalog:",
